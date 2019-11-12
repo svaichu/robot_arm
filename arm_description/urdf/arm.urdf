@@ -1,0 +1,82 @@
+<?xml version='1.0'?>
+<robot name="arm">
+  <link name="footprint" />
+
+  <link name="base_link">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--box size= ".6 .2 .1"/-->
+        <mesh filename="package://arm_description/meshes/base_link.stl"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--box size= ".6 .2 .1"/-->
+        <mesh filename="package://arm_description/meshes/base_link.stl"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="ground_joint" type="fixed">
+    <parent link="footprint"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link name="shoulder">
+    <collision>
+      <origin rpy="3.14159 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!-- cylinder length="0.05" radius="0.1"/-->
+        <mesh filename="package://arm_description/meshes/shoulder.stl"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="3.14159 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!-- cylinder length="0.05" radius="0.1"/-->
+        <mesh filename="package://arm_description/meshes/shoulder.stl"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="base_joint" type="revolute">
+    <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
+    <origin rpy="0 0 0" xyz="0 0 0.04"/>
+    <child link="shoulder"/>
+    <parent link="base_link"/>
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <limit effort="87" lower="-2.8973" upper="2.8973" velocity="2.1750"/>
+  </joint>
+
+  <link name="elbow">
+    <collision name="right_wheel_front_collision">
+      <origin rpy="0 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- cylinder length="0.05" radius="0.1"/-->
+        <mesh filename="package://arm_description/meshes/elbow.stl"/>
+      </geometry>
+    </collision>
+    <visual name="right_wheel_front_visual">
+      <origin rpy="0 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- cylinder length="0.05" radius="0.1"/-->
+        <mesh filename="package://arm_description/meshes/elbow.stl"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="shoulder_joint" type="revolute">
+    <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
+    <origin rpy="1.5707 0 1.5707" xyz="0 0 0.02"/>
+    <child link="elbow"/>
+    <parent link="shoulder"/>
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <limit effort="87" lower="-2.8973" upper="2.8973" velocity="2.1750"/>
+  </joint>
+
+  <gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+		  <robotNamespace>/arm</robotNamespace>
+		</plugin>
+	</gazebo>
+</robot>
