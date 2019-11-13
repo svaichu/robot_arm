@@ -86,13 +86,13 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <!-- cylinder length="0.05" radius="0.1"/-->
-        <mesh filename="package://arm_description/meshes/frontal.stl"/>
+        <mesh filename="package://arm_description/meshes/frontal_arm.stl"/>
       </geometry>
     </visual>
   </link>
   <joint name="elbow_joint" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
-    <origin rpy="0 1.5707 0" xyz="0 0 0.2"/>
+    <origin rpy="0 0 1.5707" xyz="-0.2 0 0.015"/>
     <child link="frontal_arm"/>
     <parent link="elbow"/>
     <axis rpy="0 0 0" xyz="0 0 1"/>
@@ -116,9 +116,9 @@
   </link>
   <joint name="wrist_joint" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
-    <origin rpy="1.5707 0 1.5707" xyz="0 0 0.15"/>
+    <origin rpy="0 0 -1.5707" xyz="0 0.15 -0.015"/>
     <child link="wrist"/>
-    <parent link="elbow"/>
+    <parent link="frontal_arm"/>
     <axis rpy="0 0 0" xyz="0 0 1"/>
     <limit effort="87" lower="-2.8973" upper="2.8973" velocity="2.1750"/>
   </joint>
